@@ -84,7 +84,7 @@ if $establishglobals==1 {
 		global	ms			${projects}Mindspark_Study/
 	}
 		
-	global	mindspark	"C:/Users/rbetina/Documents/GitHub/disrupting-educ-2/"
+	global	mindspark	"C:/Users/luizaandrade/Documents/GitHub/disrupting-educ-2-la/"
 	
 ///	folder globals
 
@@ -123,6 +123,7 @@ if $establishglobals==1 {
 		
 }
 
+set varabbrev on
 
 // ****************** GENERATE TABLES ****************** //
 
@@ -1317,14 +1318,7 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_levels, clear
 
 	///	drop duplicates
-
-		duplicates drop ms_id, force
 	
-	///	merge with ms roster
-	
-		mer 1:1 ms_id using ${ms_clean}ms_roster, nogen keep(match)
-	
-		
 	///	merge with ms hindi questions
 	
 		mer 1:m st_id using ${ms_clean}ms_hindiqs, nogen keep(match)
@@ -1450,9 +1444,6 @@ if $gengraphs==1 {
 
 		use ${ms_clean}ms_levels, clear
 
-	///	drop duplicates
-
-		duplicates drop ms_id, force
 
 	/// merge w/j-pal data wide
 
@@ -1497,8 +1488,6 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_levels, clear
 
 		///	drop duplicates
-
-			duplicates drop ms_id, force
 
 		///	merge with ms math questions
 		

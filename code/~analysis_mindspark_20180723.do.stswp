@@ -55,8 +55,8 @@
 
 clear all
 set more off
-version 13.1
 set seed 12345
+version 13.1
 
 global	establishglobals 	"1"
 global	gentables			"1"
@@ -83,12 +83,9 @@ if $establishglobals==1 {
 		global	projects	${research}Projects/Ongoing/
 		global	ms			${projects}Mindspark_Study/
 	}
-	if c(username) == "tcejka" {
-		global	mindspark	"/Users/tcejka/Documents/repo/rep_disrupting_educ/"
-	}
-	
-	global mindspark "C:\Users\luizaandrade\Documents\GitHub\rep_disrupting_educ/"
 		
+	global	mindspark	"C:/Users/luizaandrade/Documents/GitHub/disrupting-educ-2-la/"
+	
 ///	folder globals
 
 	global data 		${mindspark}data/
@@ -109,7 +106,6 @@ if $establishglobals==1 {
 	global	el_temp		$data
 	global	el_clean	$data
 
-	
 	global	ms_temp		$data
 	global	ms_clean	$data
 
@@ -118,9 +114,16 @@ if $establishglobals==1 {
 
 	global	hh_temp		$data
 	global	hh_clean	$data
+	
+	* Create local ado file library
+	sysdir set  PLUS "${mindspark}/ado"
+	
+	adopath ++  PLUS
+  adopath ++  BASE
 		
 }
 
+set varabbrev on
 
 // ****************** GENERATE TABLES ****************** //
 
@@ -916,10 +919,7 @@ if $gentables==1 {
 /// table a.8: lee bounds estimates of ITT effects
 
 	/// run regressions
-	/* NOTE: Two issues:
-	1. This output is not saved anywhere. 
-	2. The set seed above doesn't reproduce the bootstrapped s.e.-s. 
-	*/
+	
 		reg m_theta_mle2 m_theta_mle1, robust
 		predict m_res, res
 		leebounds m_res treat,vce(analytic) tight(ms_center1) cie
@@ -1230,7 +1230,6 @@ if $gengraphs==1 {
 	/// load ms levels data
 
 		use ${ms_clean}ms_levels, clear
-		isid st_id
 
 		
 	///	merge with ms math questions
@@ -1317,10 +1316,9 @@ if $gengraphs==1 {
 	/// load ms levels data
 
 		use ${ms_clean}ms_levels, clear
-		isid st_id
 
+	///	drop duplicates
 	
-		
 	///	merge with ms hindi questions
 	
 		mer 1:m st_id using ${ms_clean}ms_hindiqs, nogen keep(match)
@@ -1445,7 +1443,8 @@ if $gengraphs==1 {
 	/// load ms levels data
 
 		use ${ms_clean}ms_levels, clear
-		isid st_id
+
+	///	drop duplicates
 
 	/// merge w/j-pal data wide
 
@@ -1488,8 +1487,10 @@ if $gengraphs==1 {
 	/// load ms levels data
 
 		use ${ms_clean}ms_levels, clear
-		isid st_id
 
+		///	drop duplicates
+
+			duplicates drop ms_id, force
 
 		///	merge with ms math questions
 		
@@ -1544,7 +1545,7 @@ if $gengraphs==1 {
 	/// reload ms levels data
 
 		use ${ms_clean}ms_levels, clear
-		isid st_id
+		
 		///	drop duplicates
 
 
