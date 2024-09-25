@@ -115,6 +115,12 @@ if $establishglobals==1 {
 
 	global	hh_temp		$data
 	global	hh_clean	$data
+	
+	* Create local ado file library
+	sysdir set  PLUS "${mindspark}/ado"
+	
+	adopath ++  PLUS
+    adopath ++  BASE
 		
 }
 // ****************** GENERATE TABLES ****************** //
