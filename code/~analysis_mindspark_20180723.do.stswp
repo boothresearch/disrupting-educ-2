@@ -84,7 +84,7 @@ if $establishglobals==1 {
 		global	ms			${projects}Mindspark_Study/
 	}
 		
-	global	mindspark	"C:/Users/luizaandrade/Documents/GitHub/disrupting-educ-2-la/"
+	global	mindspark	"C:/Users/rbetina/Documents/GitHub/disrupting-educ-2/"
 	
 ///	folder globals
 
@@ -1184,9 +1184,6 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_ei, clear
 		
 	///	drop duplicates
-		
-		duplicates drop st_id, force
-
 	/// merge w/j-pal data wide
 
 		mer 1:1 st_id using ${el_clean}ms_blel_jpal_wide, nogen
@@ -1194,6 +1191,11 @@ if $gengraphs==1 {
 	///	replace attendance for controls
 	
 		replace att_tot=0 if treat==0
+		
+		iesave "${data}/fig5.dta", replace ///
+		  idvars(st_id) version(15)                ///
+		  report(path("${data}/fig5.dta") replace)
+
 		
 	///	plot math graph
 	
@@ -1444,7 +1446,6 @@ if $gengraphs==1 {
 
 		use ${ms_clean}ms_levels, clear
 
-	///	drop duplicates
 
 	/// merge w/j-pal data wide
 
@@ -1489,8 +1490,6 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_levels, clear
 
 		///	drop duplicates
-
-			duplicates drop ms_id, force
 
 		///	merge with ms math questions
 		
