@@ -83,7 +83,9 @@ if $establishglobals==1 {
 		global	projects	${research}Projects/Ongoing/
 		global	ms			${projects}Mindspark_Study/
 	}
-	z	
+		
+	global	mindspark	"C:/Users/rbetina/Documents/GitHub/disrupting-educ-2/"
+	
 ///	folder globals
 
 	global data 		${mindspark}data/
@@ -104,7 +106,6 @@ if $establishglobals==1 {
 	global	el_temp		$data
 	global	el_clean	$data
 
-	
 	global	ms_temp		$data
 	global	ms_clean	$data
 
@@ -113,9 +114,16 @@ if $establishglobals==1 {
 
 	global	hh_temp		$data
 	global	hh_clean	$data
+	
+	* Create local ado file library
+	sysdir set  PLUS "${mindspark}/ado"
+	
+	adopath ++  PLUS
+  adopath ++  BASE
 		
 }
 
+set varabbrev on
 
 // ****************** GENERATE TABLES ****************** //
 
@@ -1176,9 +1184,6 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_ei, clear
 		
 	///	drop duplicates
-		
-		duplicates drop st_id, force
-
 	/// merge w/j-pal data wide
 
 		mer 1:1 st_id using ${el_clean}ms_blel_jpal_wide, nogen
@@ -1186,6 +1191,11 @@ if $gengraphs==1 {
 	///	replace attendance for controls
 	
 		replace att_tot=0 if treat==0
+		
+		iesave "${data}/fig5.dta", replace ///
+		  idvars(st_id) version(15)                ///
+		  report(path("${data}/fig5.md") replace)
+
 		
 	///	plot math graph
 	
@@ -1310,14 +1320,7 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_levels, clear
 
 	///	drop duplicates
-
-		duplicates drop ms_id, force
 	
-	///	merge with ms roster
-	
-		mer 1:1 ms_id using ${ms_clean}ms_roster, nogen keep(match)
-	
-		
 	///	merge with ms hindi questions
 	
 		mer 1:m st_id using ${ms_clean}ms_hindiqs, nogen keep(match)
@@ -1443,9 +1446,6 @@ if $gengraphs==1 {
 
 		use ${ms_clean}ms_levels, clear
 
-	///	drop duplicates
-
-		duplicates drop ms_id, force
 
 	/// merge w/j-pal data wide
 
@@ -1490,8 +1490,6 @@ if $gengraphs==1 {
 		use ${ms_clean}ms_levels, clear
 
 		///	drop duplicates
-
-			duplicates drop ms_id, force
 
 		///	merge with ms math questions
 		
